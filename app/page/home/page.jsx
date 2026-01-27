@@ -7,26 +7,40 @@ import axios from "axios";
 import ThemeToggle from "../../components/theme/layout";
 import NavbarHome from "./components/navbarHome/layout";
 import HomePage from "@/app/page/home/components/homePage/page";
+import { AlertOctagon } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState("");
   const [email, setEmail] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) router.push("/page/error");
+    if (!token) {
+      setIsSuccess(false);
+      router.push("/page/error");
+    }
 
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_URL}/auth/user-info`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user-info`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        );
+        setIsSuccess(true);
         setUser(res.data.username);
         setEmail(res.data.email);
-      });
+      } catch (err) {
+        console.error(err);
+        alert(err.response?.data?.message);
+      }
+    };
+    fetchData();
   }, []);
 
   const RemoveToken = () => {
@@ -40,7 +54,7 @@ export default function Home() {
         <NavbarHome user={user} email={email} RemoveToken={RemoveToken} />
       </header>
       <main>
-        <HomePage />
+        <HomePage user={user} isLoading={isSuccess} />
       </main>
     </div>
   );

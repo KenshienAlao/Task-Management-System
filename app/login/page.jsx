@@ -17,11 +17,11 @@ export default function Login() {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
         { email, password },
       );
       alert(res.data.message);
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", res.data.data.token);
       setTimeout(() => router.push("/page/home"), 1500);
     } catch (err) {
       alert(err.response?.data?.message);

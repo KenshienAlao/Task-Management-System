@@ -1,39 +1,10 @@
-import axios from "axios";
 import {
-  AlertOctagon,
   ClipboardClockIcon,
   ClipboardPlusIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-export default function HomePage() {
-  const [username, setUsername] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    const fetchData = async () => {
-      try {
-        await axios
-          .get(`${process.env.NEXT_PUBLIC_API_URL}/auth/user-info`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((res) => {
-            setUsername(res.data.username);
-            setIsLoading(false);
-          });
-      } catch (err) {
-        alert(err.response?.data?.message);
-      }
-    };
-    fetchData();
-  }, []);
-
+export default function HomePage({ user, isLoading }) {
   const hour = new Date().getHours();
   const greeting =
     hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
@@ -52,9 +23,9 @@ export default function HomePage() {
             <h1 className="font-body text-foreground/50 animate-in flex gap-3 text-2xl font-bold duration-700">
               Ready to crush it,
               {isLoading ? (
-                <div className="bg-accent/20 h-10 w-43 animate-pulse rounded-md" />
+                <span className="text-accent capitalize">{user}</span>
               ) : (
-                <span className="text-accent capitalize">{username}</span>
+                <div className="bg-accent/20 h-10 w-43 animate-pulse rounded-md" />
               )}
               ?
             </h1>
