@@ -1,46 +1,13 @@
-"use client"
+"use client";
 
 import { User, Search, ClipboardList, LogOut } from "lucide-react";
 
 import { AnimatePresence, motion } from "framer-motion";
 
-import axios from "axios";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useState } from "react";
 
-export default function Header() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-
+export default function Header({ username, email, logOut }) {
   const [show__menu, isShow__menu] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    const fetchData = async () => {
-      try {
-        await axios
-          .get(`${process.env.NEXT_PUBLIC_API_URL}/auth/user-info`, {
-            headers: {
-              Authorization: `Bearers ${token}`,
-            },
-          })
-          .then((res) => {
-            setUsername(res.data.username);
-            setEmail(res.data.email);
-          });
-      } catch (err) {
-        alert(err.response?.data?.message);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const removeToken = () => {
-    localStorage.removeItem("token");
-  };
 
   return (
     <div>
@@ -108,11 +75,12 @@ export default function Header() {
                   </div>
 
                   <div className="mt-4 space-y-2 border-t border-gray-200 pt-4">
-                    <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-50">
+                    <button
+                      onClick={logOut}
+                      className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-50"
+                    >
                       <LogOut className="h-4 w-4" />
-                      <Link onClick={removeToken} href="/login">
-                        Logout
-                      </Link>
+                      Logout
                     </button>
                   </div>
                 </motion.div>

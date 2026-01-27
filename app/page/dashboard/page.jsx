@@ -1,19 +1,10 @@
 "use client";
 
-import { ChevronDown, Calendar, ArrowDownUp } from "lucide-react";
-
-import ThemeToggle from "@/app/components/theme/page";
-import AddButton from "./ui/addButton";
-import DeleteButton from "./ui/deleteButton";
-import Header from "@/app/page/dashboard/ui/header/page";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import TabNavigation from "@/app/page/dashboard/ui/tabNavigation/page";
+import { ChevronDown, ArrowDownUp } from "lucide-react";
+import AddButton from "./components/ui/addButton";
+import DeleteButton from "./components/ui/deleteButton";
 
 export default function Dashboard() {
-  const router = useRouter();
-  const [tokenExpired, setTokenExpired] = useState(false);
 
   return (
       <main>

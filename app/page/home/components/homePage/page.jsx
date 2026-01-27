@@ -1,7 +1,4 @@
-import {
-  ClipboardClockIcon,
-  ClipboardPlusIcon,
-} from "lucide-react";
+import { ClipboardClockIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function HomePage({ user, isLoading }) {
