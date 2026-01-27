@@ -1,0 +1,31 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: #5f7fa6;
+  --font-body: "Roboto";
+  --font-semiheader: "Oswald";
+  --font-header: "Zalando Sans Expanded";
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --text: #2c2c2cc6;
+}
+
+.dark {
+  --background: #1d1d1d;
+  --foreground: #ffffff;
+  --text: #acacacc1;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  transition:
+    background 0.5s ease,
+    color 0.5s ease;
+}
