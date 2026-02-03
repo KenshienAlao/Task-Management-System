@@ -38,6 +38,9 @@ export default function Home() {
       } catch (err) {
         console.error(err);
         alert(err.response?.data?.message);
+        if (err.response?.status === 401) {
+          router.push("/login");
+        }
       }
     };
     fetchData();

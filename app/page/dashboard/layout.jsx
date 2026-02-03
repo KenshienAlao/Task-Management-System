@@ -1,12 +1,13 @@
 "use client";
 
-import ThemeToggle from "@/app/components/theme/page";
+import ThemeToggle from "@/app/components/theme/layout";
 import Header from "./components/header/page";
 import TabNavigation from "./components/tabNavigation/page";
 import Dashboard from "./page";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Sidebar from "./components/sidebar/page";
 
 export default function RootLayout() {
   const router = useRouter();
@@ -24,16 +25,18 @@ export default function RootLayout() {
           `${process.env.NEXT_PUBLIC_API_URL}/api/auth/user-info`,
           {
             headers: {
-              Authorization: `Bearer: ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           },
         );
         setUsername(res.data.username);
         setEmail(res.data.email);
       } catch (err) {
-        console.error(err.respose?.data?.message);
-        alert(err.respose?.data?.message);
-      }
+        alert(err.response?.data?.message);
+        if (err.response?.status === 401) {
+          router.push("/login");
+        }
+      }       
     };
     fetchData();
   }, []);
@@ -44,13 +47,14 @@ export default function RootLayout() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <ThemeToggle />
       <header>
         <Header username={username} email={email} logOut={logOut} />
         <TabNavigation />
       </header>
-      <main>
+      <main className="flex flex-1">
+        <Sidebar />
         <Dashboard />
       </main>
     </div>
